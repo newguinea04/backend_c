@@ -1,15 +1,12 @@
 package com.backend.demo.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import com.backend.demo.dto.BookDto;
+import com.backend.demo.model.Book;
 import com.backend.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import com.backend.demo.dto.BookDto;
-import com.backend.demo.model.Book;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,6 +22,7 @@ public class BookController {
 
     @PostMapping
     public Book createBook(@RequestBody BookDto bookDto) {
+        // Service harus menangani setting Author berdasarkan authorId di DTO
         return booksService.createBook(bookDto);
     }
 
@@ -36,5 +34,11 @@ public class BookController {
     @DeleteMapping("/{id}")
     public void deleteDate(@PathVariable("id") Long id){
         booksService.delete(id);
+    }
+    
+    // Contoh endpoint untuk Many-to-Many
+    @PostMapping("/{bookId}/assign-to-user/{userId}")
+    public void assignBookToUser(@PathVariable Long bookId, @PathVariable Long userId) {
+        booksService.assignBookToUser(bookId, userId);
     }
 }
